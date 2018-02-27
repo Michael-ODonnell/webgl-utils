@@ -31,4 +31,37 @@ class WebGLBuilder {
 		
 		return gl;
 	}
+
+	// boilerplate code for creating a webGL shader
+	static createShader(gl, type, source) {
+	  var shader = gl.createShader(type);
+	  gl.shaderSource(shader, source);
+	  gl.compileShader(shader);
+	  var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+	  if (success) {
+		return shader;
+	  }
+
+	  gl.deleteShader(shader);
+	}
+	
+	static createProgramFromSources(gl, vertexShaderSource, fragmentShaderSource)
+	{
+	  // create our vertex and fragment shaders from the document sources
+	  let vertexShader = WebGLBuilder.createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+	  let fragmentShader = WebGLBuilder.createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+	  // create a shader program and link our shaders to it
+	  let program = gl.createProgram();
+	  gl.attachShader(program, vertexShader);
+	  gl.attachShader(program, fragmentShader);
+	  gl.linkProgram(program);
+	  let programLinkSuccess = gl.getProgramParameter(program, gl.LINK_STATUS);
+	  if (!programLinkSuccess) {
+		gl.deleteProgram(program);
+		return false;
+	  }
+
+	  return program;
+	}
 }

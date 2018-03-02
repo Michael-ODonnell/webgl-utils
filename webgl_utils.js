@@ -86,7 +86,7 @@ class WebGLRenderUtils {
     gl.drawArrays(primitiveType, primitiveOffset, primitiveCount);
   }
 
-  static drawTetrahedron(gl, program, offset) {
+  static drawTetrahedron(gl, program) {
 
     const vertices = [
        1, 1, 1,

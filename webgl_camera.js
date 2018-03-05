@@ -22,6 +22,28 @@ class WebGLCamera {
     // finally get our key events from javascript
     this._registerKeyPressEvents();
   }
+  
+  static createSimpleMVPMatrix(gl, modelMatrix)
+  {
+    const eye = vec3.fromValues(0.0, 0.0, 7.5);
+    const center = vec3.fromValues(0.0, 0.0, 0.0);
+    const up = vec3.fromValues(0, 1, 0);
+
+    const viewMatrix = mat4.create();
+    mat4.lookAt(viewMatrix, eye, center, up);
+    const aspectRatio = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const near = 0.1;
+    const far = 1000.0;
+    const fovY = 0.785398;
+    const projectionMatrix = mat4.create();
+    mat4.perspective(projectionMatrix, fovY, aspectRatio, near, far);
+
+    const vpMatrix = mat4.create();
+    mat4.multiply(vpMatrix, projectionMatrix, viewMatrix);
+    const mvpMatrix  = mat4.create();
+    mat4.multiply(mvpMatrix, vpMatrix, modelMatrix);
+    return mvpMatrix;
+  }
 
   // we recalculate this each frame because 
   // a/ the camera may have moved, changing the view matrix and

@@ -125,6 +125,25 @@ class WebGLRenderUtils {
 
     gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
   }
+
+  static drawSquare(gl, program) {
+
+    const vertices = [
+      -0.5, 0.5, 0,
+      -0.5,-0.5, 0, 
+       0.5, 0.5, 0,
+       0.5,-0.5, 0
+    ];
+
+    const vertexDimension = 3;
+
+    WebGLRenderUtils.bindFloatAttribute(gl, program, "a_position", vertices, vertexDimension);
+
+    const primitiveType = gl.TRIANGLE_STRIP;
+    const primitiveOffset = 0;
+    const primitiveCount = 4;
+    gl.drawArrays(primitiveType, primitiveOffset, primitiveCount);
+  }
 }
 
 class WebGLBuilder {
